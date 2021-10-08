@@ -1,38 +1,26 @@
 const ul = document.getElementById("todo-list");
 
-function createLi(labelText) {
-    let newLI = document.createElement("li");
-    let newDIV = document.createElement("div");
-    let newINPUT = document.createElement("input");
-    let newLABEL = document.createElement("label");
-    let newBUTTON = document.createElement("button");
-    let newEditINPUT = document.createElement("input");
-
-    newDIV.setAttribute("class", "view");
-    newINPUT.setAttribute("class", "toggle");
-    newINPUT.setAttribute("type", "checkbox");
-    newINPUT.setAttribute("onclick","changeStatus()");
-    newLABEL.setAttribute("class", "label");
-    newLABEL.innerHTML = labelText;
-    newBUTTON.setAttribute("class", "destroy");
-    newBUTTON.setAttribute("onclick", "deleteTodo()");
-    newEditINPUT.setAttribute("class", "edit");
-    newEditINPUT.setAttribute("value", labelText);
-
-    newDIV.appendChild(newINPUT);
-    newDIV.appendChild(newLABEL);
-    newDIV.appendChild(newBUTTON);
-    newLI.appendChild(newDIV);
-    newLI.appendChild(newEditINPUT);
-
-    ul.appendChild(newLI);
+function createTodo(todoName) {
+    const container = document.querySelector('.todo-list');
+    const currentTodo = container.innerHTML;
+    container.innerHTML =  currentTodo+ 
+    `
+        <li>
+            <div class="view">
+                <input class="toggle" type="checkbox"/>
+                <label class="label">${todoName}</label>
+                <button class="destroy"></button>
+            </div>
+            <input class="edit" value="${todoName}" />
+        </li>
+    `;
 }
 
 //일정 추가하기
 function addTodo() {
     if (window.event.keyCode == 13) {
         let title = document.getElementById("new-todo-title");
-        createLi(title.value);
+        createTodo(title.value);
         document.getElementById("new-todo-title").value = "";
     }
 }
