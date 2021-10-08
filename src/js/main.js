@@ -16,32 +16,51 @@ function createTodo(todoName) {
     `;
 }
 
-//일정 추가하기
+//Todo 추가하기
 function addTodo() {
-    if (window.event.keyCode == 13) {
-        let title = document.getElementById("new-todo-title");
-        createTodo(title.value);
+    const todoName = document.getElementById("new-todo-title");
+    if(todoName.value === '' || todoName.value === null)
+        return;
+
+    if(window.event.keyCode == 13){
+        createTodo(todoName.value);
         document.getElementById("new-todo-title").value = "";
+        updateCount(+1);
     }
 }
+//Todo 추가 이벤트 핸들러
+const inputTodo = document.getElementById('new-todo-title');
+inputTodo.addEventListener('keyup', addTodo);
 
-//일정 상태변경
-function changeStatus(e) {
-  let event = e || window.event;
-  let li = event.target.parentElement.parentElement;
-  li.classList.toggle('completed')
+
+function updateCount(updateCount){
+    const countContainer = document.getElementById('todo-count-text');
+    const count = countContainer.innerText;
+    countContainer.innerText = Number(count)+Number(updateCount);
 }
-//일정 삭제하기
+
+//Todo 상태변경
+function checkTodo(e) {
+  const event = e || window.event;
+  const targetContainer = e.target.parentElement.parentElement
+  targetContainer.classList.toggle('completed')
+}
+
+//Todo 상태변경 이벤트 핸들러
+const targetTodo = document.querySelector('.todo-list');
+targetTodo.addEventListener('click', checkTodo);
+
+//Todo 삭제하기
 function deleteTodo(e) {
     let event = e || window.event;
     ul.removeChild(event.target.parentElement.parentElement);
 }
-//일정수 계산하기
+//Todo수 계산하기
 function calTodoCount() {
     document.getElementById("todo-count-text").innerText =  ul.childElementCount;
 
 }
-//일정 상태별 확인
+//Todo 상태별 확인
 function filterTodoByStatus() {
   
 }
