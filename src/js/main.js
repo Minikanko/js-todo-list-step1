@@ -1,7 +1,6 @@
-const ul = document.getElementById("todo-list");
+const container = document.getElementById("todo-list");
 
 function createTodo(todoName) {
-    const container = document.querySelector('.todo-list');
     const currentTodo = container.innerHTML;
     container.innerHTML =  currentTodo+ 
     `
@@ -32,7 +31,7 @@ function addTodo() {
 const inputTodo = document.getElementById('new-todo-title');
 inputTodo.addEventListener('keyup', addTodo);
 
-
+//게시물 개수 수정
 function updateCount(updateCount){
     const countContainer = document.getElementById('todo-count-text');
     const count = countContainer.innerText;
@@ -42,27 +41,25 @@ function updateCount(updateCount){
 //Todo 상태변경
 function checkTodo(e) {
   const event = e || window.event;
-  const targetContainer = e.target.parentElement.parentElement
+  if(event.target.classList != 'toggle'){
+      return;
+  }
+  const targetContainer = event.target.parentElement.parentElement
   targetContainer.classList.toggle('completed')
 }
 
-//Todo 상태변경 이벤트 핸들러
-const targetTodo = document.querySelector('.todo-list');
-targetTodo.addEventListener('click', checkTodo);
-
 //Todo 삭제하기
 function deleteTodo(e) {
-    let event = e || window.event;
-    ul.removeChild(event.target.parentElement.parentElement);
-}
-//Todo수 계산하기
-function calTodoCount() {
-    document.getElementById("todo-count-text").innerText =  ul.childElementCount;
-
-}
-//Todo 상태별 확인
-function filterTodoByStatus() {
-  
+    const event = e || window.event;
+    if(event.target.classList != 'destroy'){
+        return;
+    }
+    container.removeChild(event.target.parentElement.parentElement);
+    updateCount(-1);
 }
 
-ul.addEventListener("change", calTodoCount());
+//Todo 상태변경 이벤트 핸들러
+container.addEventListener('click', checkTodo);
+//Todo 삭제 이벤트 핸들러
+container.addEventListener('click', deleteTodo);
+
