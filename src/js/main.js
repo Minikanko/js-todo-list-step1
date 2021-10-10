@@ -85,15 +85,50 @@ function updateStorage(todoName, todoStatus){
 
 
 //Todo 전체보기
-function showAllTodo(){
-    container.innerHTML = localStorage.getItem('todoList');
+function showAllTodo(e){
+    const event = e || window.event;
+    if(!event.target.classList.contains('all')){
+        return;
+    }
+    const todoList = JSON.parse(localStorage.getItem('todoList'));
+    let temp = '';
+        todoList.forEach((todo) => {
+            temp = temp + 
+        `<li class = ${todo.todoStatus ? 'completed' : ''}>
+            <div class="view">
+                <input class="toggle" type="checkbox" ${todo.todoStatus ? 'checked' : ''}/>
+                <label class="label">${todo.todoName}</label>
+                <button class="destroy"></button>
+            </div>
+            <input class="edit" value="${todo.todoName}" />
+        </li>`
+        })
+        container.innerHTML = temp;
     calCount();
 }
 
 //Todo 해야할일 보기
-function noCompleteTodo(){
+function noCompleteTodo(e){
+    const event = e || window.event;
+    if(!event.target.classList.contains('active')) {
+        return;
+    }
+
     const todoList = JSON.parse(localStorage.getItem('todoList'));
-    console.log(todoList)
+    let temp = '';
+    todoList.filter((todo) => todo.todoStatus === false).forEach((noCompleteTodo) => {
+        temp = temp + 
+        `<li class = ${noCompleteTodo.todoStatus? 'completed': ''}>
+            <div class="view">
+                <input class="toggle" type="checkbox" ${noCompleteTodo.todoStatus? 'checked':''}/>
+                <label class="label">${noCompleteTodo.todoName}</label>
+                <button class="destroy"></button>
+            </div>
+            <input class="edit" value="${noCompleteTodo.todoName}" />
+        </li>`
+    })
+    container.innerHTML = temp;
+    calCount();
 
 }
 
@@ -121,11 +156,14 @@ function completeTodo(e){
     `;
     });
    container.innerHTML = temp;
+   calCount();
 }
 
 
 
 filterContainer.addEventListener('click', completeTodo);
+filterContainer.addEventListener('click', showAllTodo);
+filterContainer.addEventListener('click', noCompleteTodo);
 
 //Todo 상태변경 이벤트 핸들러
 container.addEventListener('click', checkTodo);
